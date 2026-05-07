@@ -6,6 +6,7 @@ from src.claim_extractor import extract_claims
 from src.web_search import live_web_search
 from src.verifier import verify_claim
 from src.report_utils import results_to_dataframe, generate_markdown_report
+from src.config import has_secret
 
 
 st.set_page_config(
@@ -60,9 +61,20 @@ with st.sidebar:
     st.header("Settings")
     max_claims = st.slider("Maximum claims to verify", 3, 30, 10)
     max_sources = st.slider("Sources per claim", 3, 10, 5)
-    st.info(
-        "For best results, add OPENAI_API_KEY and TAVILY_API_KEY or SERPER_API_KEY in Streamlit secrets."
-    )
+    openai_ready = has_secret("OPENAI_API_KEY")
+    tavily_ready = has_secret("TAVILY_API_KEY")
+    serper_ready = has_secret("SERPER_API_KEY")
+
+    st.subheader("Provider Status")
+    st.write(f"OpenAI: {'connected' if openai_ready else 'missing'}")
+    st.write(f"Tavily: {'connected' if tavily_ready else 'missing'}")
+    st.write(f"Serper: {'connected' if serper_ready else 'missing'}")
+
+    if not openai_ready or not (tavily_ready or serper_ready):
+        st.warning(
+            "Add OPENAI_API_KEY and at least one search key "
+            "(TAVILY_API_KEY or SERPER_API_KEY) in Streamlit app secrets."
+        )
 
 uploaded_file = st.file_uploader("Upload PDF for automated fact-checking", type=["pdf"])
 

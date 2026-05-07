@@ -1,22 +1,9 @@
-import os
 import re
 import json
 from typing import List, Dict
-from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
-
-
-def _get_secret(name: str):
-    value = os.getenv(name)
-    if value:
-        return value
-    try:
-        import streamlit as st
-        return st.secrets.get(name)
-    except Exception:
-        return None
+from src.config import get_secret
 
 
 def evidence_to_text(evidence: List[Dict]) -> str:
@@ -47,7 +34,7 @@ def _important_words(claim: str) -> List[str]:
 
 
 def verify_with_openai(claim: str, evidence: List[Dict]) -> Dict:
-    api_key = _get_secret("OPENAI_API_KEY")
+    api_key = get_secret("OPENAI_API_KEY")
     if not api_key:
         return {}
 

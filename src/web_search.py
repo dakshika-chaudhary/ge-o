@@ -1,26 +1,12 @@
-import os
 import requests
 from typing import List, Dict
 from duckduckgo_search import DDGS
-from dotenv import load_dotenv
 
-load_dotenv()
-
-
-def _get_secret(name: str):
-    """Read key from env or Streamlit secrets if available."""
-    value = os.getenv(name)
-    if value:
-        return value
-    try:
-        import streamlit as st
-        return st.secrets.get(name)
-    except Exception:
-        return None
+from src.config import get_secret
 
 
 def search_tavily(query: str, max_results: int = 5) -> List[Dict]:
-    api_key = _get_secret("TAVILY_API_KEY")
+    api_key = get_secret("TAVILY_API_KEY")
     if not api_key:
         return []
 
@@ -59,7 +45,7 @@ def search_tavily(query: str, max_results: int = 5) -> List[Dict]:
 
 
 def search_serper(query: str, max_results: int = 5) -> List[Dict]:
-    api_key = _get_secret("SERPER_API_KEY")
+    api_key = get_secret("SERPER_API_KEY")
     if not api_key:
         return []
 
