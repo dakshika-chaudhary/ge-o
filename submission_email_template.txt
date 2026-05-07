@@ -1,0 +1,17 @@
+Subject: Fact-Check Agent Submission
+
+Hi Dakshika,
+
+Please find my submission details below:
+
+Deployed App Link:
+[Add Streamlit/Vercel/Render deployed link here]
+
+GitHub Repository:
+[Add GitHub repository link here]
+
+Demo Video:
+[Add 30-second demo video link here]
+
+Thanks,
+Anjali
